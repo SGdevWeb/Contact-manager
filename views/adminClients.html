@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="fr">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Créer un client</title>
+  </head>
+  <body>
+    <h1>Ajout d'un client</h1>
+    <form id="clientForm">
+      <label>Nom : <input type="text" name="name" required /></label><br />
+      <label>Email : <input type="email" name="email" required /></label><br />
+      <label
+        >Quota max : <input type="number" name="quotaMax" value="1000" /></label
+      ><br />
+      <button type="submit">Créer</button>
+    </form>
+
+    <script>
+      const form = document.getElementById("clientForm");
+      form.addEventListener("submit", async (e) => {
+        e.preventDefault();
+        const formData = new FormData(form);
+        const data = Object.fromEntries(formData.entries());
+
+        const res = await fetch("/api/clients", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            "x-admin-key": "TON_API_KEY_ADMIN",
+          },
+          body: JSON.stringify(data),
+        });
+
+        const result = await res.json();
+        alert(result.success ? "Client ajouté !" : "Erreur : " + result.error);
+      });
+    </script>
+  </body>
+</html>

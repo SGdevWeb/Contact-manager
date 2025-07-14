@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="fr">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Liste des Clients</title>
+    <style>
+      table {
+        border-collapse: collapse;
+        width: 100%;
+      }
+      th,
+      td {
+        padding: 8px;
+        border: 1px solid #aaa;
+        text-align: left;
+      }
+      th {
+        background-color: #f0f0f0;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>📋 Liste des Clients</h1>
+    <table id="clientsTable">
+      <thead>
+        <tr>
+          <th>Nom</th>
+          <th>Email</th>
+          <th>Client ID</th>
+          <th>API Key</th>
+          <th>Quota Max</th>
+          <th>Messages Envoyés</th>
+          <th>Créé le</th>
+        </tr>
+      </thead>
+      <tbody></tbody>
+    </table>
+
+    <script>
+      const adminKey = "TON_API_KEY_ADMIN"; // Tu peux sécuriser ça plus tard
+
+      fetch("/api/clients", {
+        headers: {
+          "x-admin-key": adminKey,
+        },
+      })
+        .then((res) => res.json())
+        .then((data) => {
+          const table = document.querySelector("#clientsTable tbody");
+          data.clients.forEach((client) => {
+            const row = document.createElement("tr");
+            row.innerHTML = `
+            <td>${client.name}</td>
+            <td>${client.email}</td>
+            <td>${client.clientId}</td>
+            <td>${client.apiKey}</td>
+            <td>${client.quotaMax}</td>
+            <td>${client.messagesSent}</td>
+            <td>${new Date(client.createdAt).toLocaleString()}</td>
+          `;
+            table.appendChild(row);
+          });
+        })
+        .catch((err) => {
+          alert("Erreur lors du chargement des clients");
+          console.error(err);
+        });
+    </script>
+  </body>
+</html>
