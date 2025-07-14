@@ -1,0 +1,16 @@
+{
+  "name": "Contact-manager",
+  "version": "1.0.0",
+  "main": "index.js",
+  "repository": "git@github.com:SGdevWeb/Contact-manager.git",
+  "author": "SGdevWeb <samuel.gustin.dev@gmail.com>",
+  "license": "MIT",
+  "dependencies": {
+    "body-parser": "^2.2.0",
+    "dotenv": "^17.2.0",
+    "express": "^5.1.0",
+    "mysql2": "^3.14.2",
+    "nodemailer": "^7.0.5",
+    "uuid": "^11.1.0"
+  }
+}
