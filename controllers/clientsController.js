@@ -4,13 +4,6 @@ const db = require("../db");
 const sendApiKeyByEmail = require("../mailer/sendApiKey");
 
 const createClient = async (req, res) => {
-  const adminKey = req.headers[x - admin - key];
-  if (adminKey !== process.env.ADMIN_API_KEY) {
-    return res.status(403).json({
-      error: "Accès refusé",
-    });
-  }
-
   const { name, email, quotaMax = 1000 } = req.body;
   if (!name || !email)
     return res.status(400).json({ error: "Champs requis manquants" });
@@ -37,12 +30,9 @@ const createClient = async (req, res) => {
 };
 
 const getAllClients = async (req, res) => {
-  const adminKey = req.headers[x - admin - key];
-  if (adminKey !== process.env.ADMIN_API_KEY) {
-    return res.status(403).json({ error: "Accès interdit" });
-  }
-
   try {
+    const [rows] = await db.execute("SELECT * FROM clients");
+    res.json({ client: rows });
   } catch (err) {
     console.error(err);
     res

@@ -1,0 +1,25 @@
+<form id="loginForm">
+  <input name="username" placeholder="Nom d’utilisateur" required />
+  <input name="password" type="password" placeholder="Mot de passe" required />
+  <button type="submit">Se connecter</button>
+</form>
+
+<script>
+  document.getElementById("loginForm").addEventListener("submit", async (e) => {
+    e.preventDefault();
+    const form = new FormData(e.target);
+    const body = Object.fromEntries(form.entries());
+
+    const res = await fetch("/api/login", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(body),
+    });
+
+    if (res.ok) {
+      window.location.href = "/admin/clients";
+    } else {
+      alert("Connexion refusée");
+    }
+  });
+</script>
