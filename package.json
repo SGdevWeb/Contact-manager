@@ -9,9 +9,11 @@
   "author": "SGdevWeb <samuel.gustin.dev@gmail.com>",
   "license": "MIT",
   "dependencies": {
+    "bcrypt": "^6.0.0",
     "body-parser": "^2.2.0",
     "dotenv": "^17.2.0",
     "express": "^5.1.0",
+    "express-session": "^1.18.1",
     "mysql2": "^3.14.2",
     "nodemailer": "^7.0.5",
     "uuid": "^11.1.0"

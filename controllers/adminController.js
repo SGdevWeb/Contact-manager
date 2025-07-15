@@ -1,4 +1,3 @@
-const path = require("path");
 const db = require("../db");
 const bcrypt = require("bcrypt");
 
