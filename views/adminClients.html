@@ -21,6 +21,7 @@
   </head>
   <body>
     <h1>📋 Liste des Clients</h1>
+    <button id="logoutBtn">Déconnexion</button>
     <table id="clientsTable">
       <thead>
         <tr>
@@ -37,13 +38,18 @@
     </table>
 
     <script>
-      const adminKey = "TON_API_KEY_ADMIN"; // Tu peux sécuriser ça plus tard
+      fetch("/check-session")
+        .then((res) => {
+          if (!res.ok) {
+            // Pas connecté, redirection vers login
+            window.location.href = "/login";
+          }
+        })
+        .catch(() => {
+          window.location.href = "/login";
+        });
 
-      fetch("/api/clients", {
-        headers: {
-          "x-admin-key": adminKey,
-        },
-      })
+      fetch("/api/clients")
         .then((res) => res.json())
         .then((data) => {
           const table = document.querySelector("#clientsTable tbody");
@@ -64,6 +70,17 @@
         .catch((err) => {
           alert("Erreur lors du chargement des clients");
           console.error(err);
+        });
+
+      document
+        .getElementById("logoutBtn")
+        .addEventListener("click", async () => {
+          const res = await fetch("/logout");
+          if (res.ok) {
+            window.location.href = "/login";
+          } else {
+            alert("Erreur lors de la déconnexion");
+          }
         });
     </script>
   </body>

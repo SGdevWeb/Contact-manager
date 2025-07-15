@@ -1,9 +1,11 @@
 const express = require("express");
 const bodyParser = require("body-parser");
 const dotenv = require("dotenv");
-const clientRoutes = require("./routes/clients");
 const path = require("path");
 const session = require("express-session");
+
+const clientRoutes = require("./routes/clients");
+const adminRoutes = require("./routes/admin");
 const { requireAdmin } = require("./middleware/auth");
 
 dotenv.config();
@@ -13,26 +15,26 @@ app.use(bodyParser.json());
 app.use(express.static("views"));
 app.use(
   session({
-    secret: "Uneclétemporaireachanger",
+    secret: process.env.SESSION_SECRET,
     resave: false,
     saveUninitialized: true,
     // cookie: { secure: false },
   })
 );
 
+app.use("/", adminRoutes);
+
 app.use("/api/clients", requireAdmin, clientRoutes);
 
-// page de connexion
+// Vues Html
 app.get("/login", (req, res) => {
   res.sendFile(path.join(__dirname, "views", "login.html"));
 });
 
-// page formulaire admin
 app.get("/admin", (req, res) => {
   res.sendFile(path.join(__dirname, "views", "adminForm.html"));
 });
 
-// page vue clients
 app.get("/admin/clients", (req, res) => {
   res.sendFile(path.join(__dirname, "views", "adminClients.html"));
 });
