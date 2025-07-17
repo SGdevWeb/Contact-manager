@@ -3,6 +3,7 @@ const bodyParser = require("body-parser");
 const dotenv = require("dotenv");
 const path = require("path");
 const session = require("express-session");
+const MySQLStore = require("express-mysql-session")(session);
 
 const clientRoutes = require("./routes/clients");
 const adminRoutes = require("./routes/admin");
@@ -13,28 +14,45 @@ dotenv.config();
 const app = express();
 app.use(bodyParser.json());
 app.use(express.static("views"));
+
+// Configuration du store MySQL
+const sessionStore = new MySQLStore({
+  host: process.env.DB_HOST,
+  user: process.env.DB_USER,
+  password: process.env.DB_PASSWORD,
+  database: process.env.DB_NAME,
+  clearExpired: true,
+  checkExpirationInterval: 900000, // 15 min
+  expiration: 86400000, // 1 jours
+});
+
+// Middleware express-session
 app.use(
   session({
     secret: process.env.SESSION_SECRET,
     resave: false,
-    saveUninitialized: true,
-    // cookie: { secure: false },
+    saveUninitialized: false,
+    store: sessionStore,
+    cookie: {
+      secure: false,
+      httpOnly: true,
+      sameSite: "lax",
+      maxAge: 86400000,
+    },
   })
 );
 
-app.use("/", adminRoutes);
-
+// Routes API
+app.use("/api/admin", adminRoutes);
 app.use("/api/clients", requireAdmin, clientRoutes);
 
-// Vues Html
+// Routes HTML
 app.get("/login", (req, res) => {
   res.sendFile(path.join(__dirname, "views", "login.html"));
 });
-
 app.get("/admin", (req, res) => {
   res.sendFile(path.join(__dirname, "views", "adminForm.html"));
 });
-
 app.get("/admin/clients", (req, res) => {
   res.sendFile(path.join(__dirname, "views", "adminClients.html"));
 });

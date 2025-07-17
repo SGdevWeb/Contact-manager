@@ -10,14 +10,15 @@
     const form = new FormData(e.target);
     const body = Object.fromEntries(form.entries());
 
-    const res = await fetch("/api/login", {
+    const res = await fetch("http://localhost:3000/api/admin/login", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(body),
     });
 
     if (res.ok) {
-      window.location.href = "/admin/clients";
+      console.log("connexion administrateur");
+      window.location.href = "http://localhost:3000/admin/clients";
     } else {
       alert("Connexion refusée");
     }

@@ -13,7 +13,7 @@ const createClient = async (req, res) => {
 
   try {
     const [rows] = await db.execute(
-      "INSERT INTO clients (clientId, apiKay, email, name, quitaMax, messagesSent) VALUES (?,?,?,?,?,0)",
+      "INSERT INTO clients (clientId, apiKey, email, name, quotaMax, messagesSent) VALUES (?,?,?,?,?,0)",
       [clientId, apiKey, email, name, quotaMax]
     );
 
@@ -32,7 +32,7 @@ const createClient = async (req, res) => {
 const getAllClients = async (req, res) => {
   try {
     const [rows] = await db.execute("SELECT * FROM clients");
-    res.json({ client: rows });
+    res.json({ clients: rows });
   } catch (err) {
     console.error(err);
     res

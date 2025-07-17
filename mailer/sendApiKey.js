@@ -16,8 +16,8 @@ const sendApiKeyByEmail = async (client) => {
     from: `"Ton Service Contact" <${process.env.EMAIL_USER}>`,
     to: client.email,
     subject: "Identifiants de formulaire de contact",
-    text: `Bonjour,\n\n
-    Voici les identifiants d'accès pour ${client.name}:\n\n
+    text: `Bonjour,\n
+    Voici les identifiants d'accès pour ${client.name}:\n
     Client ID: ${client.clientId}\n
     Clé API: ${client.apiKey}\n\n
     Cordialement

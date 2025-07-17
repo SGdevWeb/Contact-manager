@@ -26,8 +26,8 @@
           method: "POST",
           headers: {
             "Content-Type": "application/json",
-            "x-admin-key": "TON_API_KEY_ADMIN",
           },
+          credentials: "include",
           body: JSON.stringify(data),
         });
 
