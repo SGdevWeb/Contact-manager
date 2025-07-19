@@ -4,9 +4,11 @@ const dotenv = require("dotenv");
 const path = require("path");
 const session = require("express-session");
 const MySQLStore = require("express-mysql-session")(session);
+const cors = require("cors");
 
 const clientRoutes = require("./routes/clients");
 const adminRoutes = require("./routes/admin");
+const contactRoutes = require("./routes/contact");
 const { requireAdmin } = require("./middleware/auth");
 
 dotenv.config();
@@ -14,6 +16,12 @@ dotenv.config();
 const app = express();
 app.use(bodyParser.json());
 app.use(express.static("views"));
+
+app.use(
+  cors({
+    origin: "http://localhost:5173",
+  })
+);
 
 // Configuration du store MySQL
 const sessionStore = new MySQLStore({
@@ -45,6 +53,7 @@ app.use(
 // Routes API
 app.use("/api/admin", adminRoutes);
 app.use("/api/clients", requireAdmin, clientRoutes);
+app.use("/api/contact", contactRoutes);
 
 // Routes HTML
 app.get("/login", (req, res) => {
